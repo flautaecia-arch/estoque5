@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: sistema-contagem-estoque
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      mkdir -p /opt/render/project/src/database
+      python setup_production.py
+    startCommand: python src/main.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: PORT
+        value: 5000
+      - key: DATABASE_DIR
+        value: /opt/render/project/src/database
+    healthCheckPath: /
+    disk:
+      name: sqlite-disk
+      mountPath: /opt/render/project/src/database
+      sizeGB: 1
+
+
